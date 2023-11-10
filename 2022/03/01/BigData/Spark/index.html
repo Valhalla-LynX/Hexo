@@ -1,0 +1,287 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>[Spark][Eng] Spark Analytics Engine Introduction | Observatory</title><meta name="keywords" content="BigData,Spark,SparkStreaming"><meta name="author" content="V-LynX"><meta name="copyright" content="V-LynX"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="AbstractDoc: How to use Spark. [English] | [中文] Spark is a unified analytics engine for large-scale data processing. It provides high-level APIs in Scala, Java, Python, and R, and an optimized engine">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Spark][Eng] Spark Analytics Engine Introduction">
+<meta property="og:url" content="http://blog.valhalla.space/2022/03/01/BigData/Spark/index.html">
+<meta property="og:site_name" content="Observatory">
+<meta property="og:description" content="AbstractDoc: How to use Spark. [English] | [中文] Spark is a unified analytics engine for large-scale data processing. It provides high-level APIs in Scala, Java, Python, and R, and an optimized engine">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://pic.valhalla.space/img/Blog/PicGo/Spark.jpeg">
+<meta property="article:published_time" content="2022-03-01T14:15:20.000Z">
+<meta property="article:modified_time" content="2023-09-19T08:04:24.720Z">
+<meta property="article:author" content="V-LynX">
+<meta property="article:tag" content="BigData">
+<meta property="article:tag" content="Spark">
+<meta property="article:tag" content="SparkStreaming">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://pic.valhalla.space/img/Blog/PicGo/Spark.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://blog.valhalla.space/2022/03/01/BigData/Spark/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?28754adf25091073afae7978c85a0022";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '[Spark][Eng] Spark Analytics Engine Introduction',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-09-19 16:04:24'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.0.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="http://pic.valhalla.space/img/logo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">9</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('http://pic.valhalla.space/img/Blog/PicGo/Spark.jpeg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Observatory</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">[Spark][Eng] Spark Analytics Engine Introduction</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-03-01T14:15:20.000Z" title="发表于 2022-03-01 22:15:20">2022-03-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-09-19T08:04:24.720Z" title="更新于 2023-09-19 16:04:24">2023-09-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="[Spark][Eng] Spark Analytics Engine Introduction"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h1><p>Doc: How to use Spark. [<a href="http://blog.valhalla.space/2022/03/01/BigData/Spark/" title="Spark">English</a>] | [<a href="http://blog.valhalla.space/2022/03/02/BigData/Spark_CN/" title="Spark_CN">中文</a>]</p>
+<p>Spark is a unified analytics engine for large-scale data processing. It provides high-level APIs in Scala, Java, Python, and R, and an optimized engine that supports general computation graphs for data analysis. It also supports a rich set of higher-level tools including Spark SQL for SQL and DataFrames, pandas API on Spark for pandas workloads, MLlib for machine learning, GraphX for graph processing, and Structured Streaming for stream processing.</p>
+<p><img src="http://pic.valhalla.space/img/Blog/PicGo/Spark-Frame.png" alt="Spark-Frame" title="Spark-Frame"></p>
+<p>*In this case, we use hadoop2.6 and spark2.2 for example. Python or Java are used. The main difference is the function call.</p>
+<h1 id="Programming-Model"><a href="#Programming-Model" class="headerlink" title="Programming Model"></a>Programming Model</h1><p>We ues the example from <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Apache_Spark">Wiki</a> to explain the basic concepts.</p>
+<p>The program that computes the frequencies of all words occurring in a set of text files and prints the most common ones.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.rdd.RDD</span><br><span class="line"> </span><br><span class="line">// step <span class="number">1</span></span><br><span class="line">// _ placeholder, your root path </span><br><span class="line">val rootPath: String = _</span><br><span class="line">val file: String = s<span class="string">&quot;$&#123;rootPath&#125;/wikiOfSpark.txt&quot;</span></span><br><span class="line"> </span><br><span class="line">// read file</span><br><span class="line">val lineRDD: RDD[String] = spark.sparkContext.textFile(file)</span><br><span class="line"></span><br><span class="line">// step <span class="number">2</span> </span><br><span class="line">// participle by line unit</span><br><span class="line">val wordRDD: RDD[String] = lineRDD.flatMap(line =&gt; line.split(<span class="string">&quot; &quot;</span>))</span><br><span class="line">val cleanWordRDD: RDD[String] = wordRDD.<span class="built_in">filter</span>(word =&gt; !word.equals(<span class="string">&quot;&quot;</span>))</span><br><span class="line"></span><br><span class="line">// step <span class="number">3</span></span><br><span class="line">// convert RDD element by <span class="built_in">map</span></span><br><span class="line">val kvRDD: RDD[(String, Int)] = cleanWordRDD.<span class="built_in">map</span>(word =&gt; (word, <span class="number">1</span>))</span><br><span class="line">// count <span class="keyword">and</span> aggregate words by reduceByKey</span><br><span class="line">val wordCounts: RDD[(String, Int)] = kvRDD.reduceByKey((x, y) =&gt; x + y)</span><br><span class="line"> </span><br><span class="line">// Print the <span class="number">5</span> most frequent words</span><br><span class="line">wordCounts.<span class="built_in">map</span>&#123;case (k, v) =&gt; (v, k)&#125;.sortByKey(false).take(<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<p>Ok, there are three main steps here.</p>
+<ol>
+<li>read content</li>
+<li>participle</li>
+<li>group count</li>
+</ol>
+<p>At first, there are 3 new concepts, namely <code>spark, sparkContext and RDD</code>.</p>
+<p><code>spark</code>: development entry SparkSession instance, auto created by spark-shell in system.</p>
+<p><code>sparkContext</code>: development entry.</p>
+<p>Starting from version 2.0, SparkSession replaces SparkContext and becomes a unified development portal.</p>
+<p><code>RDD</code> is similar to an array of data , will be covered in the next chapter.</p>
+<p>Next, function named <code>flatMap</code> of lineRDD which performs two action: map and flatten. Flatten, it is to cut strings from RDD[String] to RDD[Array[String]]. Map RDD[Array[String]] to RDD[String]. Now we got an array containing all words from the sentence. But split may produce empty strings, so we need <code>filter</code> to remove them.</p>
+<p>At last, all the aggregation is done through key value pairs in Spark. We <code>map</code> RDD[String] to RDD[(String, 1)], whicn means a complete word. A key(word) corresponds to a value(count 1). Use <code>reduceByKey</code> to aggregate data, as same at <code>flatMap</code>, which performs two action: grop and count. RDD[String] will be groupde by key(same words in a group). Count the total number of each group.</p>
+<p>Now we get the total number of each group by <code>sortByKey</code>.</p>
+<h1 id="RDD"><a href="#RDD" class="headerlink" title="RDD"></a>RDD</h1><p>Resilient Distributed Datasets. RDD is an abstraction, which is Spark’s abstraction for distributed data sets, which is used to encompass all distributed data entities in memory and on disk.Cross-process. Cross-node. It works at a cluster scope. <code>Partitions</code> is a major concept. RDD has four main concepts.</p>
+<ul>
+<li>partitions</li>
+<li>partitioner</li>
+<li>dependencies</li>
+<li>compute</li>
+</ul>
+<p>partitions: All data shards.</p>
+<p>partitioner: Sharding rules.</p>
+<p>dependencies: Origin of sharding.</p>
+<p>compute: Conversion function. When an RDD is manipulated, an RDD transformation is generated. In the RDD programming model, there are two types of operators, the Transformations operator and the Actions operator. Transformations define and describe the transformation process of data form. Actions collect calculation results or materialize them to disk.</p>
+<p>So, Spark’s computation at runtime is divided into two phases.</p>
+<ol>
+<li>Transformations: Based on the conversion between different data forms, construct a computational flow graph (<code>DAG, Directed Acyclic Graph</code>).</li>
+<li>Actions: Trigger execution of DAG.</li>
+</ol>
+<p>The logic is executed through the DAG only when the action is called. It called <code>Lazy Evaluation</code>. So Action is the most time-consuming. Other operations just generate the DAG.</p>
+<p>A batch of data for an executor corresponds to an RDD.</p>
+<h1 id="RDD-operator"><a href="#RDD-operator" class="headerlink" title="RDD operator"></a>RDD operator</h1><p><code>SparkContext.parallelize</code>: create RDDs from Spark inner class, which is a function not for Big Data.</p>
+<p><code>SparkContext.textFile</code>: create RDDs from a Big Data text.</p>
+<p>For <code>map</code>, we call it mapping function. For <code>filter</code>, we call it decision function. For <code>reduceByKey</code>, we call it aggregate function.</p>
+<p><img src="http://pic.valhalla.space/img/Blog/PicGo/Spark-Operator.png" alt="Spark-Operator" title="Spark-Operator"></p>
+<h2 id="mapping"><a href="#mapping" class="headerlink" title="mapping"></a>mapping</h2><p><code>map</code>: data transformation at the granularity of data element.</p>
+<p><code>mapPartitions</code>: data transformation at the granularity of data partitions.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.security.MessageDigest</span><br><span class="line"> </span><br><span class="line">val cleanWordRDD: RDD[String] = _</span><br><span class="line"> </span><br><span class="line">val kvRDD: RDD[(String, Int)] = cleanWordRDD.mapPartitions( partition =&gt; &#123;</span><br><span class="line">  val md5 = MessageDigest.getInstance(<span class="string">&quot;MD5&quot;</span>)</span><br><span class="line">  val newPartition = partition.<span class="built_in">map</span>( word =&gt; &#123;</span><br><span class="line">    (md5.digest(word.getBytes()).mkString,<span class="number">1</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  newPartition</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>Unlike (RDD)<code>map</code> directly, (partition)<code>map</code> will only be executed once in <code>mapPartitions</code>.</p>
+<p>For <code>mapPartitionsWithIndex</code>, there is one more data partition index than <code>mapPartitions</code>.</p>
+<p><img src="http://pic.valhalla.space/img/Blog/PicGo/Spark-MapPartitions.png" alt="Spark-MapPartitions" title="Spark-MapPartitions"></p>
+<p><code>flatMap</code>: from elements to sets, and from sets to elements.</p>
+<p>For <code>map</code>, from (element)s to (element)s. For <code>flatMap</code>, from (element)s to (set(same ket element)))s.</p>
+<p><code>filter</code>: filter RDDs.</p>
+<p>Takes a function that returns bool. RDDs that return false after calculation will be filtered.</p>
+<h2 id="aggregation"><a href="#aggregation" class="headerlink" title="aggregation"></a>aggregation</h2><p>In type <a href="convert">conver</a>(mapping operator), these are the operator whiout <a href="shuffle">shuffle</a> work(wrok in RDD, not the scope of the executor).</p>
+<p>Now, these operators introduce heavy shuffle computation. Their names describe these functions well.</p>
+<p><code>groupByKey</code>: group and collect. From (K,V) to (set(K.V)).</p>
+<p><code>reduceByKey</code>: group aggregation. From (K,V) to (V or a new Type). However, compared with groupByKey, which consumes the disk and network by recording the full amount of raw data, reduceByKey will perform preliminary aggregation calculations in the Map phase of Shuffle before placing it on the disk and distributing it. ReduceByKey has two stages. After the map aggregation end aggregates in the RDD of each executor, the Reduce end aggregates shuffle and aggregate in the RDD between executors. Therefore, when the data is large enough, the performance will be optimized a lot. <strong>In summary, you must make the logic of the map stage and the reduce stage consistent to complete the aggregation task together.</strong></p>
+<p><code>aggregateByKey</code>: more flexible aggregation operators. It has three parameters: an initial value, a Map-side aggregate function f1, and a Reduce-side aggregate function f2. You can define and execute two aggregate methods.</p>
+<ul>
+<li>The initial value type, which must be the same as the result type of f2.</li>
+<li>The formal parameter type of f1 must be consistent with the Value type of Paired RDD.</li>
+<li>The formal parameter type of f2 must be the same as the result type of f1.</li>
+</ul>
+<p><code>sortByKey</code>: sort by Key in ascending order. <code>sortByKey(false)</code> sort by Key in descending order.</p>
+<h1 id="Distributed-Computing"><a href="#Distributed-Computing" class="headerlink" title="Distributed Computing"></a>Distributed Computing</h1><p>In Spark, there are two main roles: Driver and Executor.</p>
+<p><code>Driver</code>: the driver will parse the code, build a computational flow graph DAG, then convert the DAG into distributed tasks, and distribute the tasks to the Executors in the cluster to run.</p>
+<p><code>Executor</code>: run distributed tasks.</p>
+<p><a href="#what's-shuffle"><code>Shuffle</code></a> is an extended concept of Big Data range. In Spark, the process of distributing a batch of RDDs from a Driver to a batch of d<del>a</del>ta in different Executors is <code>Shuffle</code>.</p>
+<p>Executors will return the final calculation result to the Driver.</p>
+<table>
+<thead>
+<tr>
+<th>step</th>
+<th>process</th>
+<th>component</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Split the DAG into Stages, and create distributed Tasks and TaskSets based on Stages</td>
+<td>Driver</td>
+<td>DAGScheduler</td>
+</tr>
+<tr>
+<td>Get available resources</td>
+<td>Driver</td>
+<td>SchedulerBackend</td>
+</tr>
+<tr>
+<td>Schedule according to priority</td>
+<td>Driver</td>
+<td>TaskScheduler</td>
+</tr>
+<tr>
+<td>Assign tasks to ExecutorsGet available resource</td>
+<td>Driver</td>
+<td>SchedulerBackend</td>
+</tr>
+<tr>
+<td>Distributed computing task</td>
+<td>Executor</td>
+<td>ExecutorBackend</td>
+</tr>
+</tbody></table>
+<p>DAGScheduler: Backtrack the DAG with the Actions operator as the starting point, and divide the Stages with the Shuffle as the boundary. Recursive inference from backward to forward. Calculate the resource table of an Executor.</p>
+<p>SchedulerBackend: SchedulerBackend maintains communication and computing resource table with ExecutorBackend. SchedulerBackend provides computing resources with WorkerOffer granularity. WorkerOffer encapsulates Executor ID, host address, number of CPU cores and memory, etc. It is used to represent an idle resource that can be used to schedule tasks.</p>
+<p>TaskScheduler:  Tasks are scheduled by the loc property of Task. DAGScheduler sets the loc attribute to the Task according to the physical address of the data partition. The loc attribute includes the computing node and Executor process ID.</p>
+<p>ExecutorBackend: Perform tasks.</p>
+<p>In Spark code, tend not to move data, move tasks first.</p>
+<h1 id="Shuffle-an-efficiency-factor"><a href="#Shuffle-an-efficiency-factor" class="headerlink" title="Shuffle,an efficiency factor"></a>Shuffle,an efficiency factor</h1><p>You can refer to the <a href="what's-shuffle">previous introduction</a>. The objects shuffled are RDDs of different executors.</p>
+<p>When a distributed distribution set is distributed in a cluster, it will generate a lot of disk I&#x2F;O and network I&#x2F;O.</p>
+<p>Refer to the previous example, there is a shuffle from map stage to reduce stage.</p>
+<p>At this stage, different data needs to be sent to the RDD corresponding to the unified key according to the key in the RDD data. This process exchanges data through <code>Shuffle intermediate files</code>. Shuffle intermediate files include data files and index files, with MapTask as the granularity. The same key data is stored in the RDD of an executor. An RDD can store multiple data. After reading multiple times, each executor has multiple RDDs, such as no shuffle aggregation calculation, the same key data will be distributed on the RDD of different actuators.</p>
+<p>The data exchange rule is also called the partition rule because it defines how the distributed dataset is divided into data partitions during the Reduce phase.</p>
+<p>In the map stage, there is a formula that determines how records are distributed to which reduce task.</p>
+<blockquote>
+<p>P &#x3D; Hash(Record Key) % N</p>
+</blockquote>
+<p>Shuffle Write, how to generate intermediate files.</p>
+<ol>
+<li>Computes the target partition of the data in the data partition, complementing the in-memory data structure.</li>
+<li>When the data structure is full, there are still unprocessed records, sort by records (ID, key, etc.), save the overflow file to a temporary file (HDFS tmp), and clear the memory data structure.</li>
+<li>Repeat step 2 until all data records are processed.</li>
+<li>Merge and sort temporary files and memory data records, generate data files and index files.</li>
+</ol>
+<p>Shuffle Read.</p>
+<p>The Reduce Task “locates” its own data content through the index file, and downloads its own data records from the data files of different nodes through the network.</p>
+<p>So, Intermediate files are stored in <code>spark.local.dir</code>(default: &#x2F;tmp).</p>
+<p>This is why spark wants to use HDFS.</p>
+<p>About <a target="_blank" rel="noopener" href="https://spark.apache.org/docs/3.1.2/configuration.html#application-properties">Doc</a>.</p>
+<p>Directory to use for “scratch” space in Spark, including map output files and RDDs that get stored on disk. This should be on a fast, local disk in your system. It can also be a comma-separated list of multiple directories on different disks.<br><em>Note:</em> This will be overridden by SPARK_LOCAL_DIRS (Standalone), MESOS_SANDBOX (Mesos) or LOCAL_DIRS (YARN) environment variables set by the cluster manager.</p>
+<p>In linux, &#x2F;tmp is cleaned up periodically (refer to the distribution policy). When &#x2F;tmp is cleaned, Spark needs to reshuffle or recache RDDs. So the default &#x2F;tmp may be not suitable. And multiple directories are allowed.</p>
+<h1 id="Install-and-distributed-deployment"><a href="#Install-and-distributed-deployment" class="headerlink" title="*Install and distributed deployment"></a>*Install and distributed deployment</h1></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">V-LynX</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://blog.valhalla.space/2022/03/01/BigData/Spark/">http://blog.valhalla.space/2022/03/01/BigData/Spark/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://blog.valhalla.space" target="_blank">Observatory</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/BigData/">BigData</a><a class="post-meta__tags" href="/tags/Spark/">Spark</a><a class="post-meta__tags" href="/tags/SparkStreaming/">SparkStreaming</a></div><div class="post_share"><div class="social-share" data-image="http://pic.valhalla.space/img/Blog/PicGo/Spark.jpeg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/03/02/BigData/Spark_CN/"><img class="prev-cover" src="http://pic.valhalla.space/img/Blog/PicGo/Spark.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">[Spark][中文]Spark分析引擎介绍</div></div></a></div><div class="next-post pull-right"><a href="/2021/01/21/GameDev/Unity2D-InstantChess-03/"><img class="next-cover" src="http://pic.valhalla.space/img/Blog/PicGo/Unity.jpg?Blog" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Unity2D-三天入门-即时战略象棋-(3)网络插件Mirror与打包发行</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/03/02/BigData/Spark_CN/" title="[Spark][中文]Spark分析引擎介绍"><img class="cover" src="http://pic.valhalla.space/img/Blog/PicGo/Spark.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-02</div><div class="title">[Spark][中文]Spark分析引擎介绍</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="http://pic.valhalla.space/img/logo.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">V-LynX</div><div class="author-info__description">Development Log</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">9</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Valhalla-LynX" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:infinitytree.com@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Abstract"><span class="toc-number">1.</span> <span class="toc-text">Abstract</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Programming-Model"><span class="toc-number">2.</span> <span class="toc-text">Programming Model</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#RDD"><span class="toc-number">3.</span> <span class="toc-text">RDD</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#RDD-operator"><span class="toc-number">4.</span> <span class="toc-text">RDD operator</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#mapping"><span class="toc-number">4.1.</span> <span class="toc-text">mapping</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#aggregation"><span class="toc-number">4.2.</span> <span class="toc-text">aggregation</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Distributed-Computing"><span class="toc-number">5.</span> <span class="toc-text">Distributed Computing</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Shuffle-an-efficiency-factor"><span class="toc-number">6.</span> <span class="toc-text">Shuffle,an efficiency factor</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Install-and-distributed-deployment"><span class="toc-number">7.</span> <span class="toc-text">*Install and distributed deployment</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/11/11/Logger/%5BPLG%5DLoki%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86/" title="[Log][PLG]Loki Microservices Log Collection"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="[Log][PLG]Loki Microservices Log Collection"/></a><div class="content"><a class="title" href="/2022/11/11/Logger/%5BPLG%5DLoki%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86/" title="[Log][PLG]Loki Microservices Log Collection">[Log][PLG]Loki Microservices Log Collection</a><time datetime="2022-11-11T01:34:13.000Z" title="发表于 2022-11-11 09:34:13">2022-11-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/04/28/BigData/%5B%E5%AE%9E%E6%97%B6%E6%95%B0%E4%BB%93%5D%5BFlink%5D%5BDataStream%20API%5D%E5%AE%9E%E6%97%B6%E6%95%B0%E4%BB%93/" title="[实时数仓][Flink][DataStream API]实时数仓"><img src="https://pic.valhalla.space/img/Blog/PicGo/Flink.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="[实时数仓][Flink][DataStream API]实时数仓"/></a><div class="content"><a class="title" href="/2022/04/28/BigData/%5B%E5%AE%9E%E6%97%B6%E6%95%B0%E4%BB%93%5D%5BFlink%5D%5BDataStream%20API%5D%E5%AE%9E%E6%97%B6%E6%95%B0%E4%BB%93/" title="[实时数仓][Flink][DataStream API]实时数仓">[实时数仓][Flink][DataStream API]实时数仓</a><time datetime="2022-04-28T07:45:30.000Z" title="发表于 2022-04-28 15:45:30">2022-04-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/03/21/DesignPattern/Pipeline_CN/" title="[设计模式][中文]管道(管线)设计模式"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="[设计模式][中文]管道(管线)设计模式"/></a><div class="content"><a class="title" href="/2022/03/21/DesignPattern/Pipeline_CN/" title="[设计模式][中文]管道(管线)设计模式">[设计模式][中文]管道(管线)设计模式</a><time datetime="2022-03-21T10:21:20.000Z" title="发表于 2022-03-21 18:21:20">2022-03-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/03/21/DesignPattern/Pipeline/" title="[DesignPattern][Eng] Pipeline Design Pattern"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="[DesignPattern][Eng] Pipeline Design Pattern"/></a><div class="content"><a class="title" href="/2022/03/21/DesignPattern/Pipeline/" title="[DesignPattern][Eng] Pipeline Design Pattern">[DesignPattern][Eng] Pipeline Design Pattern</a><time datetime="2022-03-21T03:52:25.000Z" title="发表于 2022-03-21 11:52:25">2022-03-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/03/02/BigData/Spark_CN/" title="[Spark][中文]Spark分析引擎介绍"><img src="http://pic.valhalla.space/img/Blog/PicGo/Spark.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="[Spark][中文]Spark分析引擎介绍"/></a><div class="content"><a class="title" href="/2022/03/02/BigData/Spark_CN/" title="[Spark][中文]Spark分析引擎介绍">[Spark][中文]Spark分析引擎介绍</a><time datetime="2022-03-02T06:50:20.000Z" title="发表于 2022-03-02 14:50:20">2022-03-02</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By V-LynX</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
